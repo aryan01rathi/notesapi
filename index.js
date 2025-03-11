@@ -3,13 +3,24 @@ const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 
 dotenv.config();
 //parse the req body in json
 app.use(express.json());
 
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 60, // Max 100 requests per window per IP
+  message: "Too many requests from this IP, please try again later.",
+});
+
+app.use(globalLimiter);
+
+
 //-----??????-----
 app.use(cors());
+
 
 const userRouter = require("./routes/userRoutes");
 const noteRouter = require("./routes/notesRoutes");
