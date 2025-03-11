@@ -26,8 +26,24 @@ const createNote = async (req, res)=>{
 const deleteNote=async (req, res)=>{
     const id=req.params.id;
     try {
-        const note= await noteModel.findByIdAndRemove(id);
-        res.status(202).json(note);
+
+        const curr_note = await noteModel.findById(id);
+
+        if (!curr_note) {
+            return res.status(404).json({ message: "Note not found" });
+        }
+
+        // if (curr_note.userId.toString() !== req.userId) {
+        //     return res.status(403).json({ message: "Unauthorized: You can only delete your own notes" });
+        // }
+
+
+
+        await noteModel.findByIdAndRemove(id);
+        res.status(202).json({
+            message: "Note deleted successfully",
+            deletedNote: curr_note // Sending back the deleted note details
+        });
     } catch (error) {
         console.log(error);
         res.status(500).json({message:"Something went wrong"});

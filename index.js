@@ -13,7 +13,6 @@ app.use(cors());
 
 const userRouter = require("./routes/userRoutes");
 const noteRouter = require("./routes/notesRoutes");
-
 app.use("/user", userRouter);
 app.use("/note", noteRouter);
 
