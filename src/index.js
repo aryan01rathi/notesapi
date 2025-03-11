@@ -3,17 +3,27 @@ const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 
 dotenv.config();
 //parse the req body in json
 app.use(express.json());
 
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 60, // Max 100 requests per window per IP
+  message: "Too many requests from this IP, please try again later.",
+});
+
+app.use(globalLimiter);
+
+
 //-----??????-----
 app.use(cors());
 
+
 const userRouter = require("./routes/userRoutes");
 const noteRouter = require("./routes/notesRoutes");
-
 app.use("/user", userRouter);
 app.use("/note", noteRouter);
 
@@ -30,8 +40,7 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 5000;
 //connecting database
 
- mongoose.connect("mongodb+srv://aryan2001rathi:aryanrathi@cluster0.7rw9pl7.mongodb.net/notes_db?retryWrites=true&w=majority")
-//mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     app.listen(PORT, () => {
       console.log("Server started at port number " + PORT);

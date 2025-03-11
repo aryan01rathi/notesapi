@@ -13,9 +13,9 @@ const noteSchema= mongoose.Schema({
         //to refer the userid created by mongodb when we creates the user
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
-        requires: true
+        required: true
     }
-},{timestamp:true});
+},{timestamps:true});
 
-//----???
+//----to export this model so that any folder can import and use this model
 module.exports=mongoose.model("Note", noteSchema);
