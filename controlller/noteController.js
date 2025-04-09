@@ -26,6 +26,9 @@ const createNote = async (req, res)=>{
 
 const deleteNote=async (req, res)=>{
     const id=req.params.id;
+    if (id.startsWith(':')) {
+        id = id.substring(1);
+    }
     try {
 
         const curr_note = await noteModel.findById(id);
@@ -66,8 +69,8 @@ const updateNote=async (req, res)=>{
     }
 
     try {
-        await noteModel.findByIdAndUpdate(id,newNote, {new:true});
-        res.status(200).json(newNote);
+        const updatedNote = await noteModel.findByIdAndUpdate(id,newNote,{new:true});
+        res.status(200).json(updatedNote);
     } catch (error) {
         console.log(error);
         res.status(500).json({message:"Something went wrong " +error});

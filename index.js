@@ -11,14 +11,14 @@ app.use(express.json());
 
 const globalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 60, // Max 100 requests per window per IP
+  max: 60, // Max 60 requests per window per IP
   message: "Too many requests from this IP, please try again later.",
 });
 
 app.use(globalLimiter);
 
 
-//-----??????-----
+//--- it acts as a security feature by controlling which websites are allowed to make requests
 app.use(cors());
 
 

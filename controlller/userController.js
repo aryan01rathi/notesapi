@@ -23,6 +23,7 @@ const signup=async (req,res)=>{
         const hashedPassword= await bcrypt.hash(password,10);
 
         //3.
+        //.create does both create and save
         const result= await userModel.create({
             email:email,
             password:hashedPassword,

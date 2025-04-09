@@ -5,7 +5,7 @@ const sanitizeHtml = require("sanitize-html");
 const { getNote, createNote, deleteNote, updateNote } = require("../controlller/noteController");
 const noteRouter= express.Router();
 
-// getnotes or creatnotes all these are next function in auth middleware
+
 
 const validateRequest = (req, res, next) => {
     const errors = validationResult(req);
@@ -32,17 +32,17 @@ const sanitizeInput = (req, res, next) => {
 
 //create note
 
-noteRouter.post(
-    "/",
-    auth,
-    [
-        body("title").notEmpty().withMessage("Title is required"),
-        body("description").notEmpty().withMessage("Description is required"),
-    ],
-    validateRequest,
-    sanitizeInput,
-    createNote
-);
+    noteRouter.post(
+        "/",
+        auth,
+        [
+            body("title").notEmpty().withMessage("Title is required"),
+            body("description").notEmpty().withMessage("Description is required"),
+        ],
+        validateRequest,
+        sanitizeInput,
+        createNote
+    );
 
 //get note
 noteRouter.get('/',auth, getNote);
